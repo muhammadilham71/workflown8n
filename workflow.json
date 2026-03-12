@@ -1,0 +1,114 @@
+{
+  "name": "workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d3fed5fd-25a7-4ba3-bc30-a0e0c8bec4ee",
+      "name": "When chat message received",
+      "webhookId": "b9974874-24d3-446b-ad0e-5278d8d6a004"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Anda adalah chatbot AI yang membantu menjawab pertanyaan pelanggan mengenai produk kopi online.\n\nTugas Anda:\n- Menjelaskan jenis kopi yang tersedia\n- Memberikan informasi harga kopi\n- Menjelaskan cara pemesanan produk\n\nJika informasi tidak tersedia, jawab dengan jujur bahwa informasi tersebut tidak tersedia dan sarankan pengguna mengunjungi website toko kopi."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "22bffb2a-279d-4d82-b996-8edc50e420f0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        208,
+        176
+      ],
+      "id": "5e90815b-4ff2-4572-9c42-907f4dd46f67",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "f56IDqEInyD3WurV",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        224
+      ],
+      "id": "d608424f-1664-4c62-bacc-e1d2f7f8fa9d",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ae8881c9-4f2b-45e4-b426-71273f486eec",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "990a1e876d094a4508ffabeb573768d4a47ac799d8d31cb8d2d971d41c9d83bf"
+  },
+  "id": "Dw4lFGqL4c66lq9U",
+  "tags": []
+}
